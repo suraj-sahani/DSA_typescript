@@ -56,8 +56,10 @@ export const maximumProfit = (prices: number[]) => {
     const currentPrice = prices[i];
     if (!currentPrice) return;
 
+    // Update the minimum value we've seen so far
     minPrice = Math.min(minPrice, currentPrice);
 
+    // Update the profit if the profit has increased
     res = Math.max(res, currentPrice - minPrice);
   }
 
