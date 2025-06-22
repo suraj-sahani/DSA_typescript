@@ -150,13 +150,33 @@ export class LinkedList<T> {
       this.length++;
     }
   }
+
+  deleteAtIndex(index: number) {
+    let current = this.head;
+    if (index === 1) {
+      this.shift();
+      return;
+    }
+
+    if (index === this.length) {
+      this.pop();
+      return;
+    }
+
+    const prevNode = this.getElementAtIndex(index - 1);
+    const nodeToBeDeleted = this.getElementAtIndex(index);
+    if (prevNode && nodeToBeDeleted) {
+      prevNode.next = nodeToBeDeleted.next;
+      this.length--;
+    }
+  }
 }
 
 const myLinkedList = new LinkedList<number>();
 myLinkedList.push(1);
 myLinkedList.push(3);
-// myLinkedList.push(7);
-// myLinkedList.push(3);
+myLinkedList.push(5);
+myLinkedList.push(7);
 
 // myLinkedList.pop();
 
@@ -168,6 +188,7 @@ myLinkedList.push(3);
 // console.log("First Element", myLinkedList.getFirst());
 // console.log("Element at index:", myLinkedList.getElementAtIndex(0));
 
-myLinkedList.insertAtIndex(2, 2);
+// myLinkedList.insertAtIndex(2, 2);
+myLinkedList.deleteAtIndex(3);
 // myLinkedList.setElementAtIndex(2, 0);
 console.dir(myLinkedList, { depth: null });
