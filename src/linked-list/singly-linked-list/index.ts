@@ -112,7 +112,7 @@ export class LinkedList<T> {
   }
 
   getElementAtIndex(index: number) {
-    if (index > this.length) return null;
+    if (index > this.length || index === 0) return null;
     let current = this.head;
     let i = 1;
     while (i++ < index && current) {
@@ -121,13 +121,42 @@ export class LinkedList<T> {
 
     return current;
   }
+
+  setElementAtIndex(index: number, value: T) {
+    const nodeToBeSet = this.getElementAtIndex(index);
+    if (nodeToBeSet) {
+      nodeToBeSet.data = value;
+    }
+  }
+
+  insertAtIndex(index: number, value: T) {
+    if (index === 0) {
+      this.unshift(value);
+      return;
+    }
+    if (index === this.length && index !== 2) {
+      this.push(value);
+      return;
+    }
+
+    // Use the existing getElementAtIndex method to get the element before the index where the new value should be inserted
+    const prevNode = this.getElementAtIndex(index - 1);
+    // The prevNode will always have a next element since it is an element present in between the head and the tail.
+    // Since typescript is not aware of this fact, we check not not null
+    if (prevNode && prevNode.next) {
+      const newNode = new Node(value);
+      newNode.next = prevNode.next;
+      prevNode.next = newNode;
+      this.length++;
+    }
+  }
 }
 
 const myLinkedList = new LinkedList<number>();
-myLinkedList.push(5);
-myLinkedList.push(2);
-myLinkedList.push(7);
+myLinkedList.push(1);
 myLinkedList.push(3);
+// myLinkedList.push(7);
+// myLinkedList.push(3);
 
 // myLinkedList.pop();
 
@@ -137,6 +166,8 @@ myLinkedList.push(3);
 
 // console.log("Last Element", myLinkedList.getLast());
 // console.log("First Element", myLinkedList.getFirst());
+// console.log("Element at index:", myLinkedList.getElementAtIndex(0));
 
+myLinkedList.insertAtIndex(2, 2);
+// myLinkedList.setElementAtIndex(2, 0);
 console.dir(myLinkedList, { depth: null });
-console.log("Element at index:", myLinkedList.getElementAtIndex(4));
