@@ -14,11 +14,11 @@
 
 function printP5(n: number) {
   let row = "";
-  for (let i = 1; i <= n; i++) {
-    for (let j = n; j >= i; j--) row += "*";
+  for (let i = 0; i < n; i++) {
+    for (let j = n; j >= i + 1; j--) row += "*";
     console.log(row);
     row = "";
   }
 }
 
-printP5(9);
+printP5(5);
