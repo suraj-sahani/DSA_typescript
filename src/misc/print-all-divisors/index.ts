@@ -38,7 +38,7 @@
 // For n = 1800(Using Math.sqrt(1800)), Execution time: 1.7653ms.
 // Suing i * i <= num, Execution time: 0.0803ms
 
-function printDivisors(num: number) {
+export function printDivisors(num: number) {
   let res: number[] = [];
 
   for (let i = 1; i * i <= num; i++) {
