@@ -1,5 +1,8 @@
-// Algorithm - Move the minimum element to the front
-// Loop through the array from 1 to i < n - 1 since we are swapping two elements at a time
+// Basic idea - For any iteration of the array, find the minimum element in the remaining
+// Sub-array to the right of the element in the ith iteration.
+// Swap if in incorrect order
+// Moves the minimum element to the front
+// Algorithm - Loop through the array from 1 to i < n - 1 since we are swapping two elements at a time
 // Run another internal loop to find the minimum in the unsorted fportion,
 // For this, loop from i to i <= n - 1
 // Find the minimum element in the unsorted portion of the array
