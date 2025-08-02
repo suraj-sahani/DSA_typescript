@@ -1,5 +1,5 @@
 // Basic idea - Take an element and and check with the element before it
-// If is larger than the previous element, swap it.
+// If it is smaller than the previous element, swap it.
 // Loop till n - 1
 // For each iteration, run another till before the 0th since we are comparing
 // with its previous element and don't want to go out of range
