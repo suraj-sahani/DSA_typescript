@@ -38,7 +38,8 @@ export function move_zeros_to_end_brute(arr: number[]) {
 // j will always be at a zero
 // i will be iterating
 // if i if a non-zero number, we swap it with j and j moves forward
-
+// TC - O(n)
+// SC - O(1)
 export function move_zeros_to_end_optimal(nums: number[]) {
   const n = nums.length;
   let i = 0,
