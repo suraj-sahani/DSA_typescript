@@ -29,6 +29,13 @@ export function union_of_sorted_arrays_brute(arr1: number[], arr2: number[]) {
   return res;
 }
 
+// Optimal approach
+// Use two pointer to loop through both arrays
+// At each iteration take the smaller of the elements from one array
+// Check if they do not exist in the union array then add it 
+// If they do, increase the pointer for the selected array
+// TC - O(n1 + n2)
+// SC - O(n1 + n2)
 export function union_of_sorted_arrays_optimal(arr1: number[], arr2: number[]) {
   const n1 = arr1.length,
     n2 = arr2.length,
