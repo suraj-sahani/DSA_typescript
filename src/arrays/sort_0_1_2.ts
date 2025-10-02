@@ -50,6 +50,8 @@ export function sort012_better(arr: number[]) {
 // arr[low .. mid - 1] → All 1s
 // arr[mid .. high] → Unprocessed elements (unknown)
 // arr[high + 1 .. n - 1] → All 2s
+// TC - O(n)
+// SC - O(1)
 
 export function sort012_optimal(arr: number[]) {
   const n = arr.length
