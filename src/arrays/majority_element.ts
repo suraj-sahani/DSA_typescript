@@ -70,10 +70,18 @@ export function majorityElement_optimal(nums: number[]): number {
       count -= 1
   }
 
-  return candidate
+  // Verify that the candidate is indeed the majority element
+  let verifyCount = 0
+  for (let i = 0; i < n; i++) {
+    if (nums[i] === candidate) verifyCount++
+  }
+
+  if (verifyCount > Math.floor(n / 2)) return candidate
+
+  return -1
 }
 
 const start = performance.now()
 const result = majorityElement_optimal([3, 2, 3])
 const end = performance.now()
-console.log(`Result: ${result}, Execution time: ${(end - start).toFixed(4)} ms`, result)
+console.log(`Result: ${result}, Execution time: ${(end - start).toFixed(4)} ms`)
