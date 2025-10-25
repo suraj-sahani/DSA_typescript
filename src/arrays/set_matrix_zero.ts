@@ -62,6 +62,9 @@ function setMatixZeroBrute(matrix: number[][]) {
 // Better Approach:
 // Ierate through the matrix to find zeros and store their row and column indices in arrays
 // This indicates that we need to set these rows and columns to zero
+// TC - O(m * n) + O(m * n) ~ O(m * n)
+// SC - O(n) + O(m) => arrays to store rows and columns to be changed
+
 function setMatixZeroBetter(matrix: number[][]) {
   const rows = matrix[0]?.length || 0, cols = matrix.length
   const toChangeRows = new Array(rows).fill(0)
@@ -89,6 +92,63 @@ function setMatixZeroBetter(matrix: number[][]) {
   return matrix
 }
 
+// Optimal Approach:
+// We use the exact method as the better approach but instead of using extra arrays
+// We use the first row and first column of the matrix itself to store the information
+// TC - O(m * n) + O(m * n) ~ O(m * n)
+// SC - O(1)
+function setMatixZeroOptimal(matrix: number[][]) {
+  const rows = matrix.length
+  const cols = matrix[0]?.length || 0
+
+  // Store the first element of first row and first column
+  // As it is an elemnt that will be common to both row and column
+  let e0 = matrix[0]?.[0] === 1 ? 1 : 0
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+
+      if (matrix[i]?.[j] === 0) {
+        // Mark the ith row
+        matrix[i]![0] = 0
+
+        // Check if we are in the first column
+        if (j === 0) e0 = 1
+
+        // mark the jth column
+        matrix[0]![j] = 0
+      }
+    }
+  }
+
+
+  // Set all the required rows and columns to zero
+  // Ecxept the first row and first column
+  for (let i = 1; i < rows; i++) {
+    for (let j = 1; j < cols; j++) {
+      if (matrix[i]?.[0] === 0 || matrix[0]?.[j] === 0) {
+        matrix[i]![j] = 0
+      }
+    }
+  }
+
+  // Check if first row needs to be set to zero
+  if (matrix[0]?.[0] === 0) {
+    for (let j = 0; j < cols; j++) {
+      matrix[0]![j] = 0
+    }
+  }
+
+  // Check if first column needs to be set to zero
+  if (e0 === 0) {
+    for (let i = 0; i < rows; i++) {
+      matrix[i]![0] = 0
+    }
+  }
+
+  return matrix
+}
+
 function markRow(matrix: number[][], row: number) {
   const cols = matrix[0]?.length || 0
 
@@ -110,6 +170,6 @@ function markColumn(matrix: number[][], col: number) {
 }
 
 const start = performance.now()
-const result = setMatixZeroBetter([[1, 1, 1], [1, 0, 1], [1, 1, 1]])
+const result = setMatixZeroOptimal([[1, 1, 1], [1, 0, 1], [1, 1, 1]])
 const end = performance.now()
 console.log(`Execution time: ${(end - start).toFixed(4)} ms`, result)
