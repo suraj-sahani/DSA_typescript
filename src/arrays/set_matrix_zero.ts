@@ -104,7 +104,6 @@ function setMatixZeroOptimal(matrix: number[][]) {
   // Store the first element of first row and first column
   // As it is an elemnt that will be common to both row and column
   let e0 = matrix[0]?.[0] === 1 ? 1 : 0
-
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
 
@@ -113,10 +112,11 @@ function setMatixZeroOptimal(matrix: number[][]) {
         matrix[i]![0] = 0
 
         // Check if we are in the first column
-        if (j === 0) e0 = 1
-
+        if (j === 0) e0 = 0
         // mark the jth column
-        matrix[0]![j] = 0
+
+        else
+          matrix[0]![j] = 0
       }
     }
   }
@@ -170,6 +170,6 @@ function markColumn(matrix: number[][], col: number) {
 }
 
 const start = performance.now()
-const result = setMatixZeroOptimal([[1, 1, 1], [1, 0, 1], [1, 1, 1]])
+const result = setMatixZeroOptimal([[1, 1, 1, 1], [1, 0, 1, 1], [1, 1, 0, 1], [0, 1, 1, 1]])
 const end = performance.now()
 console.log(`Execution time: ${(end - start).toFixed(4)} ms`, result)
