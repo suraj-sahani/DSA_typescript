@@ -1,10 +1,13 @@
 // Given an (m x n)  matrix, return all elements of the matrix in spiral order.
 // Approch left => right, top => bottom, right => left, bottom => top
+// TC : O(m * n)
+// SC : O(m * n)
 function matrixSpiralTraverse(mat: number[][]) {
   const n = mat.length, m = mat[0]?.length || 0, ans: number[] = [];
   let top = 0, left = 0, bottom = n - 1, right = m - 1;
 
   while (top <= bottom && left <= right) {
+    // Note : We do not check for any condition here because we are checking in the for looop itself
     // Print from left to right
     for (let i = left; i <= right; i++) {
       ans.push(mat[top]![i]!)
