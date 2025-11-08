@@ -75,5 +75,48 @@ function majorityElementBetter(nums: number[]) {
   return ans
 }
 
-const res = majorityElementBetter([1, 1, 1, 3, 3, 2, 2, 2])
+// Optimal approach
+// Using the Boyer Moore's vaoting algorithm
+// TC - O(n) + O(n) => O(2n) ~ O(n)
+// SC - O(1)
+function majorityElementOptimal(nums: number[]) {
+  const n = nums.length
+  let c1 = 0, c2 = 0, el1 = Number.MIN_SAFE_INTEGER, el2 = Number.MIN_SAFE_INTEGER
+
+  for (let i = 0; i < n; i++) {
+    if (c1 === 0 && nums[i] !== el2) {
+      c1 = 1,
+        el1 = nums[i]!
+    }
+    else if (c2 === 0 && nums[i] !== el1) {
+      c2 = 1,
+        el2 = nums[i]!
+    }
+
+    else if (el1 === nums[i]) {
+      c1++
+    }
+    else if (el2 === nums[i]) {
+      c2++
+    } else {
+      c1--
+      c2--
+    }
+  }
+
+  // Check if el1 & el2 is indeed occurring n/3 times
+  c1 = 0, c2 = 0
+  for (let i = 0; i < n; i++) {
+    if (nums[i] === el1) c1++
+    else if (nums[i] === el2) c2++
+  }
+
+  let ans = [], maxCount = Math.floor(n / 3)
+  if (c1 >= maxCount) ans.push(el1)
+  if (c2 >= maxCount) ans.push(el2)
+
+  return ans
+}
+
+const res = majorityElementOptimal([1, 1, 1, 3, 3, 2, 2, 2])
 console.log(res)
