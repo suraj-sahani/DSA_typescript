@@ -22,7 +22,7 @@ export class LinkedList<T> {
   push(value: T) {
     const nodeToBeAdded = new Node(value);
 
-    // Edge case where the linked-list is enmty and has both the head and tail pointing to null;
+    // Edge case where the linked-list is empty and has both the head and tail pointing to null;
     // In this case, point both the head and tail to the pushed node.
     if (!this.head) {
       this.head = nodeToBeAdded;
