@@ -94,5 +94,57 @@ function Sum3Better(nums: number[]) {
 
 }
 
-const res = Sum3Better([-1, 0, 1, 2, -1, -4])
+// Optimal approach
+// We cannot optimize the time complexity further.
+// Thus, we reduce the space complexity by not using unique set of arrays
+// We can omit the storing of unique triplets by sorting the array
+// TC - O(n^2) => Nested Loop + O(n log n) => sort the original array
+// SC - O(number of unique elements) => to store a triplet at each iteration, the array 
+// to return the ans is not being counted
+function Sum3Optimal(nums: number[]) {
+
+  const n = nums.length, ans: number[][] = []
+  nums.sort((a, b) => a - b)
+
+  for (let i = 0; i < n; i++) {
+    // Increment i unitil it does not give the same element that 
+    // was taken in a previous iteration to avoid deduplication
+    if (i > 0 && nums[i] === nums[i - 1]) continue
+
+    let j = i + 1, k = n - 1
+    // We will use the two-pointer approach to calculate the sum while
+    // keeping i as constant and modifying j and k
+    while (j < k) {
+      const sum = nums[i]! + nums[j]! + nums[k]!
+      // If sum is less than zero we increment j
+      // since the array is sorted we will get a larger sum
+      if (sum < 0) {
+        j++
+      }
+      // If sum is greater than 0 we need to reduce it,
+      // thus we decrement k
+      else if (sum > 0) {
+        k--
+      }
+      //If both condition do not satisfy, it mean sum is equal to 0
+      else {
+        const triplet = [nums[i]!, nums[j]!, nums[k]!]
+        ans.push(triplet)
+        j++
+        k--
+
+        // If the sum is equal to zero, we need to both increase j and decrease k
+        // But, we need to make sure that this increment is within the bounds of the array
+        // and the index we are incrementing or decrementing does not give us the same number at 
+        // any particular index that was already used in previous iteration, making sure we avoid duplication of triplets
+        while (j < k && nums[j] === nums[j - 1]) j++
+        while (j < k && nums[k] === nums[k + 1]) k--
+      }
+    }
+  }
+
+  return ans
+}
+
+const res = Sum3Optimal([-1, 0, 1, 2, -1, -4])
 console.log(res)
