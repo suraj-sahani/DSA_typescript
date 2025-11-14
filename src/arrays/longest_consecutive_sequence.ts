@@ -94,7 +94,7 @@ function longestConsecutiveSequenceOptimal(nums: number[]): number {
   // Add all elemetns to the set to create unique collection
   for (let i = 0; i < n; i++) set.add(nums[i]!)
 
-  // Ierate through the set
+  // Iterate through the set
   // For each element of the iteration, check if there is a value of element - 1 in the set
   // If there is, update the count of the sequence
   // To get the start of the sequence
