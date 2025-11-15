@@ -33,7 +33,7 @@
 // SC - O(2^number of quads), one for the set stroing unique quad and another 
 // for returning the quads
 function sum4Brute(nums: number[], target: number) {
-  const n = nums.length, ans: number[][] = [], st = new Set<string>()
+  const n = nums.length, st = new Set<number[]>()
 
   for (let i = 0; i < n; i++) {
     for (let j = i + 1; j < n; j++) {
@@ -41,15 +41,14 @@ function sum4Brute(nums: number[], target: number) {
         for (let l = k + 1; l < n; l++) {
           if (nums[i]! + nums[j]! + nums[k]! + nums[l]! === target) {
             const quad = [nums[i]!, nums[j]!, nums[k]!, nums[l]!].sort((a, b) => a - b)
-            st.add(JSON.stringify(quad))
+            st.add(quad)
           }
         }
       }
     }
   }
 
-  st.forEach(val => ans.push(JSON.parse(val)))
-
+  let ans = Array.from(st)
   return ans
 }
 
@@ -61,7 +60,7 @@ function sum4Brute(nums: number[], target: number) {
 // TC - O(2 log number_of_quads) : one for returning answer, another for storing unique quads + O(n) : the  temp hashSet
 // used to find the forth element
 function sum4Better(nums: number[], target: number) {
-  const n = nums.length, ans: number[][] = [], st = new Set<string>()
+  const n = nums.length, st = new Set<number[]>()
 
   for (let i = 0; i < n; i++) {
     for (let j = i + 1; j < n; j++) {
@@ -71,7 +70,7 @@ function sum4Better(nums: number[], target: number) {
 
         if (hashSet.has(toFind)) {
           const quad = [nums[i]!, nums[j]!, nums[k]!, toFind].sort((a, b) => a - b)
-          st.add(JSON.stringify(quad))
+          st.add(quad)
         }
 
         hashSet.add(nums[k]!)
@@ -79,9 +78,58 @@ function sum4Better(nums: number[], target: number) {
     }
   }
 
-  st.forEach(val => ans.push(JSON.parse(val)))
+  let ans = Array.from(st)
   return ans
 }
 
-const res = sum4Better([1, 0, -1, 0, -2, 2], 0)
+
+// Optimal Approach
+// First we sort the array
+// We can optimize the time complexity by removing the 
+// search for the 4th element in the hashSet
+// Also, we can reduce the space complexity by discarding the set to store unique quads
+// Since this will be handled while sorting the array 
+// TC - O(n^3)
+// SC - O(number_of_quads) : only to return the answer
+function sum4Optimal(nums: number[], target: number) {
+  const n = nums.length, ans: number[][] = []
+  nums.sort((a, b) => a - b)
+  for (let i = 0; i < n; i++) {
+    // Skip step if the current and the last values of nums[i]
+    // were same to avoid duplication
+    if (i > 0 && nums[i] === nums[i - 1]) continue
+
+    for (let j = i + 1; j < n; j++) {
+      // Skip step if the current and the last values of nums[j]
+      // were same to avoid duplication
+      if (j > i + 1 && nums[j] === nums[j - 1]) continue
+      let k = j + 1, l = n - 1
+
+      while (k < l) {
+        let sum = nums[i]! + nums[j]!
+        sum += nums[k]!
+        sum += nums[l]!
+
+        if (sum < target) k++
+        else if (sum > target) l--
+        else {
+          const quad = [nums[i]!, nums[j]!, nums[k]!, nums[l]!]
+          ans.push(quad)
+
+          k++
+          l--
+
+          while (k < l && nums[k] === nums[k - 1]) k++
+          while (k < l && nums[l] === nums[l + 1]) l--
+        }
+      }
+
+    }
+  }
+
+  return ans
+}
+
+
+const res = sum4Optimal([1, 0, -1, 0, -2, 2], 0)
 console.log(res)
