@@ -78,6 +78,8 @@ function mergeIntervalsBrute(nums: number[][]) {
 // Optimal Approach
 // We can reduce the time complexity by removing the inner loop
 // to check and merge the intervals
+// TC - O(n log n) + O(n)
+// SC - O(n)
 function mergeIntervalsOptimal(nums: number[][]) {
   const n = nums.length, ans: number[][] = []
 
