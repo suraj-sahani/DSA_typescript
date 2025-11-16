@@ -74,5 +74,31 @@ function mergeIntervalsBrute(nums: number[][]) {
   return ans
 }
 
-const res = mergeIntervalsBrute([[1, 3], [2, 6], [8, 9], [9, 11], [8, 10], [2, 4], [15, 18], [16, 17]])
+
+// Optimal Approach
+// We can reduce the time complexity by removing the inner loop
+// to check and merge the intervals
+function mergeIntervalsOptimal(nums: number[][]) {
+  const n = nums.length, ans: number[][] = []
+
+  nums.sort((a, b) => a[0]! === b[0]! ? a[1]! - b[1]! : a[0]! - b[0]!)
+
+  for (let i = 0; i < n; i++) {
+    const [start, end] = nums[i]!
+    // Update the interval if either is no interval before or the 
+    // start of the current interval if greater than the last interval 
+    // which would signify that this is a new interval
+    if (!ans.length || (start! > ans?.[ans.length - 1]![1]!)) {
+      ans.push([start!, end!])
+    }
+    // If the exists an interval and it lies between the last interval, update the interval
+    else {
+      ans[ans.length - 1]![1] = Math.max(ans[ans.length - 1]![1]!, nums[i]![1]!)
+    }
+  }
+
+  return ans
+}
+
+const res = mergeIntervalsOptimal([[1, 3], [2, 6], [8, 9], [9, 11], [8, 10], [2, 4], [15, 18], [16, 17]])
 console.log(res)
