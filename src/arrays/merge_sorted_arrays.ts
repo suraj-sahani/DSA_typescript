@@ -46,7 +46,7 @@ function brute(nums1: number[], nums2: number[]) {
   const nums = []
 
   while (left < n1 && right < n2) {
-    if (nums1[left]! < nums2[right]!) {
+    if (nums1[left]! <= nums2[right]!) {
       nums[idx] = nums1[left]
       idx++, left++
     } else {
