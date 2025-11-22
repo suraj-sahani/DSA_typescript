@@ -24,12 +24,53 @@ function brute(nums: number[]) {
     else if (count === 0) missing = i
 
     // Terminate the loop if we found both repeating and missing
-    // as out goal has been achieved
+    // as out goal has been achi
     if (missing !== -1 && repeating !== -1) break
   }
 
   return { missing, repeating }
 }
 
-const res = brute([4, 3, 6, 2, 1, 1])
+
+// Better Approach
+// Take a hashmap storing the count of all elements
+// Return the missing and repeating
+function better(nums: number[]) {
+  const n = nums.length
+  const ans = Array.from({ length: n + 1 }).fill(0) as number[]
+
+
+  // const map = new Map<number, number>()
+  // Intialize the map to set count to all elements from 1 - n as 0
+  // for (let i = 1; i <= n; i++) map.set(i, 0)
+
+  // for (let i = 1; i <= n; i++)
+  // map.set(nums[i - 1]!, (map.get(nums[i - 1]!) || 0) + 1)
+
+  // map.forEach((val, key) => {
+  //   console.log(key, val)
+  //   if (val === 2) repeating = key
+  //   else if (val === 0) missing = key
+  //
+  //  if (missing !== -1 && repeating !== -1) return
+  // })
+
+
+  for (let i = 0; i < n; i++) {
+    ans[nums[i]!]!++
+  }
+
+
+  let missing = -1, repeating = -1
+  for (let i = 1; i < ans.length; i++) {
+    if (ans[i] === 0) missing = i
+    else if (ans[i] === 2) repeating = i
+
+    if (missing !== -1 && repeating !== -1) break
+  }
+
+
+  return { missing, repeating }
+}
+const res = better([4, 3, 6, 2, 1, 1])
 console.log(res)
