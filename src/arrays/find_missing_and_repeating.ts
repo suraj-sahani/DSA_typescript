@@ -74,5 +74,56 @@ function better(nums: number[]) {
 
   return { missing, repeating }
 }
-const res = better([4, 3, 6, 2, 1, 1])
+
+// Optimal Approach 1
+// We mainly use the technique of finding the sum of first n natural numbers,
+// Then build up on top of this by using basic algebric equations to find the 
+// missing and repeating numbers
+// TC - O(3n) ~ O(n)
+// SC - O(1)
+function optimal1(nums: number[]) {
+  const n = nums.length
+
+  let x = -1, y = -1 // x => repeating, y => missing
+  let sNums = 0,
+    sAll = n * (n + 1) / 2 // Sum of first n natural numbers
+
+  //Calculate the sum of all numbers in input array
+  for (let i = 0; i < n; i++) sNums += nums[i]!
+
+  // Mathematical Observation
+  // If we subtract sNums - sAll we will only be left with the difference 
+  // of the repeating and missing numbers as all the common elements will cancel
+  // each other out 
+  const diffXY = sNums - sAll // EQ 1 : x - y = diffXY
+
+  let sNumsSq = 0, sAllSq = 0
+  //Calculate the sum of squares all numbers in input array
+  for (let i = 0; i < n; i++) sNumsSq += Math.pow(nums[i]!, 2)
+
+  //Calculate the sum of squares all natural numbers till
+  for (let i = 1; i <= n; i++) sAllSq += Math.pow(i, 2)
+
+  // If we subtract both the squares, we will get the difference
+  // between the square of the repeating and the square of the missing
+  const diffXYSq = sNumsSq - sAllSq // EQ 2 : x^2 - y^2 = diffXYSq
+
+  // We know that x^2 - y^2 = (x + y) * (x - y)
+  // Since we already have the value of (x - y) => diffXY, 
+  // we can get the value of (x + y) = (x^2 - y^2) / (x - y)
+  const sumXY = diffXYSq / diffXY // EQ 3 : (x + y)  = sumXY
+
+  // Adding EQ 1 and EQ 3, we get
+  // x + y = sumXY
+  // x - y = diffXY
+  // 2x = sumXY + diffXY => x = (sumXY + diffXY) / 2
+  // then , we get y by putting the value of x in either EQ 1 or EQ 3
+  // Therefore using EQ 1, we get y = sumXY - x
+  x = (sumXY + diffXY) / 2
+  y = sumXY - x
+
+  return { missing: y, repeating: x }
+}
+
+const res = optimal1([4, 3, 6, 2, 1, 1])
 console.log(res)
