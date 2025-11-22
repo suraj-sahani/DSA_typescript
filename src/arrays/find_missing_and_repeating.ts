@@ -79,7 +79,7 @@ function better(nums: number[]) {
 // We mainly use the technique of finding the sum of first n natural numbers,
 // Then build up on top of this by using basic algebric equations to find the 
 // missing and repeating numbers
-// TC - O(3n) ~ O(n)
+// TC - O(2n) ~ O(n)
 // SC - O(1)
 function optimal1(nums: number[]) {
   const n = nums.length
@@ -97,12 +97,13 @@ function optimal1(nums: number[]) {
   // each other out 
   const diffXY = sNums - sAll // EQ 1 : x - y = diffXY
 
-  let sNumsSq = 0, sAllSq = 0
+  let sNumsSq = 0, sAllSq = (n * (n + 1) * ((2 * n) + 1)) / 6 // using this formula to get sum of squares of first n natural number
+
   //Calculate the sum of squares all numbers in input array
   for (let i = 0; i < n; i++) sNumsSq += Math.pow(nums[i]!, 2)
 
   //Calculate the sum of squares all natural numbers till
-  for (let i = 1; i <= n; i++) sAllSq += Math.pow(i, 2)
+  // for (let i = 1; i <= n; i++) sAllSq += Math.pow(i, 2)
 
   // If we subtract both the squares, we will get the difference
   // between the square of the repeating and the square of the missing
