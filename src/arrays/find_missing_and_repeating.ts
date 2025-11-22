@@ -35,9 +35,11 @@ function brute(nums: number[]) {
 // Better Approach
 // Take a hashmap storing the count of all elements
 // Return the missing and repeating
+// TC - O(2n) ~ O(n)
+// SC - O(n)
 function better(nums: number[]) {
   const n = nums.length
-  const ans = Array.from({ length: n + 1 }).fill(0) as number[]
+  const hash = Array.from({ length: n + 1 }).fill(0) as number[]
 
 
   // const map = new Map<number, number>()
@@ -57,14 +59,14 @@ function better(nums: number[]) {
 
 
   for (let i = 0; i < n; i++) {
-    ans[nums[i]!]!++
+    hash[nums[i]!]!++
   }
 
 
   let missing = -1, repeating = -1
-  for (let i = 1; i < ans.length; i++) {
-    if (ans[i] === 0) missing = i
-    else if (ans[i] === 2) repeating = i
+  for (let i = 1; i < hash.length; i++) {
+    if (hash[i] === 0) missing = i
+    else if (hash[i] === 2) repeating = i
 
     if (missing !== -1 && repeating !== -1) break
   }
