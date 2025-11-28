@@ -37,6 +37,8 @@ function brute(nums: number[]) {
 // To follow this approach, we use "Merge Sort" as it breaks down array in halves
 // sorts them and merges them. We will check if nums1[i] > nums2[j] while merging and 
 // increase the count accordingly
+// TC - O(n log n) => Merge Sort
+// SC - O(n) => temp array to merge
 function optimal(nums: number[]) {
   const n = nums.length
   const sol = merge_sort(nums, 0, n - 1)
