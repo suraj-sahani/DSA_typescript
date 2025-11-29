@@ -34,6 +34,11 @@
 // -2^31 <= nums[i] <= 2^31 - 1
 
 
+// Brute Force Approach
+// Run a nested loop and check if the 
+// current_element > that 2 * next_element
+// TC - O(n^2)
+// SC - O(1)
 function brute(nums: number[]) {
   const n = nums.length
 
