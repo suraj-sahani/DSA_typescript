@@ -21,10 +21,17 @@ function lower_bound(nums: number[], target: number) {
   while (low <= high) {
     mid = low + Math.floor((high - low) / 2)
 
+    // If the number at the current index matches the condition,
+    // We can say that this could be our answer
+    // But we need to find the smallest possible index, thus, we 
+    // narrow our search before this and update high
     if (nums[mid]! >= target) {
       bound = Math.min(bound, mid)
       high = mid - 1
-    } else {
+    }
+    // If the condition does not match, there could be a index
+    // in the second half, thus we update the search space to the right
+    else {
       low = mid + 1
     }
   }
