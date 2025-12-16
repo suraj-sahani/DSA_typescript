@@ -22,7 +22,7 @@ function upper_bound(nums: number[], target: number) {
     // But we need to find the smallest possible index, thus, we 
     // narrow our search before this and update high
     if (nums[mid]! > target) {
-      bound = Math.min(bound, mid)
+      bound = mid
       high = mid - 1
     }
     // If condition does not satisfy, look at the right
