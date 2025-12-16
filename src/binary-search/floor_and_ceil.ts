@@ -15,7 +15,8 @@
 // Result: 8 8
 // Explanation: The floor of 8 in the array is 8, and the ceiling of 8 in the array is also 8.
 
-
+// TC - O(log n) + O(log n) => O(2 log n) ~ O(log n)
+// SC - O(1)
 function solve(nums: number[], x: number) {
   const n = nums.length
   let low = 0, high = n - 1, mid, floor, ceil
