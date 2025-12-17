@@ -27,6 +27,15 @@
 // nums is a non-decreasing array.
 // -10^9 <= target <= 10^9
 
+
+// Brute Force Approach
+// Iterate through the array
+// If target is found and there was no value of
+// the first occurenece, then that is the first occurenece and maybe the last,
+// thus we update both first and last occurenece values,
+// continue iterating and update last occurenece is the target is found
+// TC - O(n)
+// SC - O(1)
 function brute(nums: number[], x: number) {
   const n = nums.length
   let fOcc = -1, lOcc = -1
@@ -45,25 +54,67 @@ function brute(nums: number[], x: number) {
   return [fOcc, lOcc]
 }
 
-function solve(nums: number[], x: number) {
+// We will use the same principal of lower and upper bound
+// Lower Bound : Smallest index where nums[i] >= x  => First occurenece
+// Upper Bound : Smallest index where nums[i] > x => Last occurenece
+// TC - Lower Bound : O(log n) + Upper Bound : O(log n) => O(2 log n) ~ O(log n)
+// SC - O(1)
+function optimal(nums: number[], x: number) {
   const n = nums.length
 
-  let low = 0, high = n - 1, fOccurenece = -1, lOccurence = -1, mid
+  let low = 0, high = n - 1, fOcc = -1, lOcc = -1, mid
+
+
+  // Find the first occurenece using lower bound
+  while (low <= high) {
+    mid = low + Math.floor((high - low) / 2)
+
+    if (nums[mid]! >= x) {
+      fOcc = mid
+      // We need the smallest index
+      high = mid - 1
+    } else
+      low = mid + 1
+  }
+
+  // Find the last occurenece using upper bound
+  low = 0, high = n - 1
 
   while (low <= high) {
     mid = low + Math.floor((high - low) / 2)
 
-    // Check in element at the middle is equal to target and the previous element
-    // Is smaller than the target
-    // If it is, then mid is the first occurenece
-    if (nums[mid] === x && nums[mid - 1]! < x) fOccurenece = mid
-    // If the element at mid is equal to target and the next element
-    // Is greater, then mid is the last occurenece
-    else if (nums[mid] === x && nums[mid + 1]! > x) lOccurence = mid
+    if (nums[mid]! > x) {
+      lOcc = mid
+      // We need the smallest index, thus we need to search before
+      high = mid - 1
+    } else low = mid + 1
   }
 
-  return [fOccurenece, lOccurence]
+  // We should not be sure that this will be the answer.
+  // Why? 
+  // Example 1: x = 10,
+  // Lower Bound = 8,
+  // Upper Bound = 8
+  // But the number is not in the array, it should return -1
+  // Example 2: x = 14,
+  // Lower bound = 8
+  // Lower bound will be "n", i.e outside the array
+  // Thus, before returning, we check that 
+  // The if the lower bound is outside the size of the array => Example 2
+  // or
+  // If the element at the lower bound is not the target => Example 1,
+  // Where the element is not in the array but there are elements greater than
+  // the target, we will get a value of the lower bound,
+  // We can say that the element does not exist in the array
+  // and thus, return [-1,-1]
+  if (fOcc === n || nums[fOcc] !== x) return [-1, -1]
+
+  // We are subtracting -1 from the last occurenece,
+  // becuase upper bound gives the the index where the number is greater 
+  // than the target and since we require the index of the last occurenece
+  // we subtract it from the index where the element is greater than the target
+  return [fOcc, lOcc - 1]
 }
 
-const res = brute([2, 2, 4, 4, 8, 8, 8, 8, 11, 13], 8)
+const res = optimal([2, 2, 4, 4, 8, 8, 8, 8, 11, 13], 10)
 console.log(res)
