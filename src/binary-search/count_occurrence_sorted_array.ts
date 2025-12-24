@@ -5,6 +5,8 @@
 // Appraoch
 // Find the first and last occurrences
 // The count will be last - first + 1
+// TC - O(2 log n)
+// SC - O(1)
 function optimal(nums: number[], x: number) {
   const n = nums.length
 
