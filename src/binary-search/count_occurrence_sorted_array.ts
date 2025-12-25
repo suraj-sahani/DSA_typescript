@@ -2,7 +2,24 @@
 // containing N integers and a number X,
 // you have to find the occurrences of X in the given array.
 
-// Appraoch
+// Brute Force Approach
+// Iterate through the array linearly and update
+// count whenever the target element is encountered
+// TC - O(n)
+// SC - O(1)
+function brute(nums: number[], x: number) {
+  const n = nums.length
+  let count = 0
+
+  for (let i = 0; i < n; i++) {
+    if (nums[i] === x) count++
+  }
+
+  return count
+}
+
+
+// Approach
 // Find the first and last occurrences
 // The count will be last - first + 1
 // TC - O(2 log n)
