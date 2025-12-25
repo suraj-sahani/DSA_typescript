@@ -63,7 +63,8 @@ function brute(nums: number[], x: number) {
 // to see which part is sorted, and which part is not,
 // Once we do this, we can check for the target in the sorted half,
 // If we don't find, we repeat updating the search space
-
+// TC - O(log n)
+// SC - O(1)
 function optimal(nums: number[], x: number) {
   const n = nums.length
   let low = 0, high = n - 1, mid
