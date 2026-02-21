@@ -32,5 +32,43 @@ function brute(nums: number[]) {
   return min_index
 }
 
-const res = brute([4, 5, 6, 7, 0, 1, 2, 3])
+// We will use the same approach for finding minimum
+// in sorted rotated array
+// TC - O(log n)
+// SC - O(1)
+function optimal(nums: number[]) {
+  const n = nums.length
+
+  let low = 0, high = n - 1, mid, min = Number.MAX_SAFE_INTEGER, min_index = Number.MAX_SAFE_INTEGER
+
+  while (low <= high) {
+    mid = low + Math.floor((high - low) / 2)
+
+    // Check if left half is sorted
+    if (nums[low]! <= nums[mid]!) {
+      // minimum number is the first element of the half
+      if (nums[low]! < min) {
+        min = nums[low]!
+        min_index = low
+      }
+
+      // eliminate this half
+      low = mid + 1
+    }
+    // Right half is sorted,
+    // Note: half is from mid to high and not from mid + 1 to high
+    else {
+      if (nums[mid]! < min) {
+        min = nums[mid]!
+        min_index = mid
+      }
+
+      high = mid - 1
+    }
+  }
+
+  return min_index
+}
+
+const res = optimal([1, 2, 4, 5, 7])
 console.log(res)
