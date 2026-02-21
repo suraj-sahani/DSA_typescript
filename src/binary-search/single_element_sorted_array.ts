@@ -48,5 +48,25 @@ function brute(nums: number[]) {
   return -1
 }
 
-const res = brute([3, 3, 7, 7, 10, 11, 11])
+// Keep a hashmap with the count of all element
+// iterate through the map and return the element that 
+// has count as 1
+// TC - O(n)
+// SC - O(n)
+function better(nums: number[]) {
+  const n = nums.length, m = new Map<number, number>()
+  let nonRepeated = -1
+  // Store count of each element
+  for (let i = 0; i < n; i++) {
+    m.set(nums[i]!, (m.get(nums[i]!) || 0) + 1)
+  }
+
+  m.forEach((val, key) => {
+    if (val === 1) nonRepeated = key
+  })
+
+  return nonRepeated
+}
+
+const res = better([1, 1, 2, 2, 3, 3, 4, 4, 8, 8])
 console.log(res)
