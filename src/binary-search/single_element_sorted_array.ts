@@ -48,6 +48,35 @@ function brute(nums: number[]) {
   return -1
 }
 
+// This is a single iteration approach
+// where, for any index i, since the array is sorted and contains duplicates,
+// either the left or the right element will have the duplicates
+// Using this we can solve this problem as well
+// TC - O(n)
+// SC - O(1)
+function brute2(nums: number[]) {
+  const n = nums.length
+
+  for (let i = 0; i < n; i++) {
+    // Edge case for first element
+    // the element before it is not present, thus we check on to the right
+    if (i === 0) {
+      if (nums[i] !== nums[i + 1]) return nums[i]
+    }
+    // Edge for for the last element,
+    // the element to the right is not available, thus we check with the element before it
+    else if (i === n - 1) {
+      if (nums[i] !== nums[i - 1]) return nums[i]
+    }
+    // Check for both left and right
+    else {
+      if (nums[i] !== nums[i - 1] && nums[i] !== nums[i + 1]) return nums[i]
+    }
+  }
+
+  return -1
+}
+
 // Keep a hashmap with the count of all element
 // iterate through the map and return the element that 
 // has count as 1
@@ -68,5 +97,10 @@ function better(nums: number[]) {
   return nonRepeated
 }
 
-const res = better([1, 1, 2, 2, 3, 3, 4, 4, 8, 8])
+
+function optimal(nums: number[]) {
+
+}
+
+const res = brute2([1, 1, 2, 3, 3, 4, 4, 8, 8])
 console.log(res)
