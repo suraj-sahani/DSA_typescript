@@ -71,5 +71,39 @@ function findTotalTimeToEatAllBananas(piles: number[], currentSpeed: number) {
   return totalTime
 }
 
-const res = brute([30, 11, 23, 4, 20], 5)
+
+// Optimal Approach
+// We can see that we know the maximum limit of answers
+// Thus, we know the range in which the answer will lie,
+// In this case, its [1, Maximum bananas in a pile]
+// We apply binary search on answers.
+// TC - O(n * log m), n for calculating total time and log m for 
+// binary search from 1 to m, m is the maximum bananas in a pile.
+// SC - O(1)
+function optimal(piles: number[], h: number) {
+  const max = Math.max(...piles)
+  let low = 1, high = max, mid, minSpeed = 0;
+  while (low <= high) {
+    mid = low + Math.floor((high - low) / 2)
+    const totalTimeForSpeed = findTotalTimeToEatAllBananas(piles, mid)
+    // If the total time is less than equal to the given time,
+    // We might have gotten the answer, but there still can be a
+    // speed that will give us a better result, and since our answers are already sorted,
+    // and we need the minimum speed, we need to lower the speed for our currentSpeed
+    // thus we eliminate the left half.
+    if (totalTimeForSpeed <= h) {
+      minSpeed = mid;
+      high = mid - 1
+    }
+    // if the total time is more, we have to increase the speed,
+    // and since the speed is higher on the right side, we eliminate the left
+    else {
+      low = mid + 1
+    }
+  }
+
+  return minSpeed
+}
+
+const res = optimal([30, 11, 23, 4, 20], 6)
 console.log(res)
