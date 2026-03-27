@@ -82,6 +82,39 @@ function brute(bloomDays: number[], m: number, k: number) {
   return -1
 }
 
+
+// Optimal Appraoch
+// From the brute force approach, we can clearly see that we know
+// the range of the answer, thus, we use binary search on answers.
+// TC - (log(max - min) * n),
+// SC - O(1)
+function optimal(bloomDays: number[], m: number, k: number) {
+  if ((m * k) > bloomDays.length) return -1
+
+  let low = Math.min(...bloomDays), high = Math.max(...bloomDays), mid, minDay = -1
+
+  while (low <= high) {
+    mid = low + Math.floor((high - low) / 2)
+
+    const isBouquetPossible = checkBouquetPossibility(mid, bloomDays, m, k)
+
+    // If there is a possibility of making the required amount of bouquets at the mid value,
+    // them we might have out answers, but, we need the minimum
+    // and since the rnage is sorted, we remove the right half 
+    if (isBouquetPossible) {
+      minDay = mid
+      high = mid - 1
+    }
+    // if its not possible for the mid value, then there is no way that the previous values
+    // will give us the required bouquets, thus we remove the left half.
+    else {
+      low = mid + 1
+    }
+  }
+
+  return minDay
+}
+
 function checkBouquetPossibility(day: number, bloomDays: number[], m: number, k: number) {
   const n = bloomDays.length
 
@@ -114,5 +147,5 @@ function checkBouquetPossibility(day: number, bloomDays: number[], m: number, k:
 
 }
 
-const res = brute([7, 7, 7, 7, 12, 7, 7], 2, 3)
+const res = optimal([7, 7, 7, 7, 12, 7, 7], 2, 3)
 console.log(res)
