@@ -48,6 +48,40 @@ function brute(nums: number[], threshold: number) {
   return -1;
 }
 
+// Optimal Approach
+// We know that the answer will lie within the max and min element in the
+// input array. Thus we can use binary search on answers
+// TC - O( (max - min) * log n)
+// SC - O(1)
+function optimal(nums: number[], threshold: number) {
+  let low = Math.min(...nums),
+    high = Math.max(...nums),
+    mid,
+    ans;
+  while (low <= high) {
+    mid = low + Math.floor((high - low) / 2);
+
+    const isPossible = checkThresholdPossibility(mid, nums, threshold);
+
+    // If the mid value can be a threshold, we can be sure that all the value after this
+    // will also be a threshold. But, we need the smallest, thus,
+    // we discard the right search space and keep looking for a
+    // samller value on the left
+    if (isPossible) {
+      ans = mid;
+      high = mid - 1;
+    }
+    // If the current mid value is not a threshold, we can be sure that
+    // no items on the left will be our answer and thus, we keep looking
+    // on the right
+    else {
+      low = mid + 1;
+    }
+  }
+
+  return ans;
+}
+
 function checkThresholdPossibility(
   curr: number,
   nums: number[],
@@ -65,5 +99,5 @@ function checkThresholdPossibility(
   return false;
 }
 
-const res = brute([44, 22, 33, 11, 1], 5);
+const res = optimal([1, 2, 5, 9], 6);
 console.log(res);
