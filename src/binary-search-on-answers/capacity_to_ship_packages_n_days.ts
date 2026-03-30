@@ -49,7 +49,8 @@
 // One observation is that since we have to transport one package each day,
 // then the ship should have the minimum capacity of the heaviest package that it needs
 // to transport.
-
+// TC - O( n * (sum of weights - max weight of package))
+// SC - O(1)
 function brute(weights: number[], days: number) {
   const minW = Math.max(...weights), maxW = weights.reduce((acc, val) => acc + val, 0)
 
@@ -60,6 +61,32 @@ function brute(weights: number[], days: number) {
   }
 
   return -1
+}
+
+
+// Optimal Approach
+// Since we know that the answer lies between the maximum of the packages
+// and the sum of weights of all packages, we use binary seach on answers.
+// TC - ( (sum of weights - max weight of packages) * log n)
+// SC - O(1)
+function optimal(weights: number[], days: number) {
+  let low = Math.max(...weights), high = weights.reduce((acc, val) => acc + val, 0), mid, minReqDays
+  while (low <= high) {
+    mid = low + Math.floor((high - low) / 2)
+
+    const reqDays = findRequiredDays(mid, weights)
+
+    // if the reqDays is within the range of "D" days,
+    // we might have our potential answer but we need to find the minimum
+    // thus, we remove the entire right search space
+    if (reqDays <= days) {
+      minReqDays = mid;
+      high = mid - 1
+    }
+    else low = mid + 1
+  }
+
+  return minReqDays
 }
 
 function findRequiredDays(currShipCapacity: number, weights: number[]) {
@@ -90,5 +117,5 @@ function findRequiredDays(currShipCapacity: number, weights: number[]) {
   return reqDays
 }
 
-const res = brute([3, 2, 2, 4, 1, 4], 3)
+const res = optimal([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5)
 console.log(res)
