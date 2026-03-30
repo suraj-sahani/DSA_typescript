@@ -54,39 +54,40 @@ function brute(weights: number[], days: number) {
   const minW = Math.max(...weights), maxW = weights.reduce((acc, val) => acc + val, 0)
 
   for (let i = minW; i <= maxW; i++) {
-    const isPossible = checkPossibilityForShipCapacity(i, weights, days)
+    const reqDays = findRequiredDays(i, weights)
 
-    if (isPossible) return i
+    if (reqDays <= days) return i
   }
 
   return -1
 }
 
-function checkPossibilityForShipCapacity(curr: number, weights: number[], days: number) {
-
+function findRequiredDays(currShipCapacity: number, weights: number[]) {
   // Approach is that we keep ietrating over weights and
   // adding up weights[i] until it exceeds the "curr" value.
   // If it does, we increment days.
   // At last if the reqDays exceeds the given days, i.e the curr 
   // is not the value at which we can transport packages to match the criteria
-  let reqDays = 0, totalWeight = 0;
+  let reqDays = 1, load = 0;
   const n = weights.length
 
   for (let i = 0; i < n; i++) {
-    // Issue noticed is that we are checking if the weight exceeded the current ship capacity
-    // after ading it up. This creates inconsistency with the regart that if the weight exceeds,
-    // we have to transport the exceeded package, the next day.
-    console.dir({ prevTotal: totalWeight, newTtotal: totalWeight + weights[i]!, reqDays })
-    totalWeight += weights[i]!
-    if (totalWeight > curr) reqDays++
+    // We initially check that if the currentWeigh + previous load value
+    // exceeps the spis capacity, we need to increment the req days 
+    // at the same time, we need to reset the load to the exceeding unit as 
+    // if we keep track if the load for the current day does not exceed the 
+    // current ships capacity
+    if (load + weights[i]! > currShipCapacity) {
+      reqDays++;
+      load = weights[i]!
+    }
+    // If it does not, we keep increasing the load for the day
+    else {
+      load += weights[i]!
+    }
   }
 
-  // If after the iteration, the curr ships capacity satisfies
-  // the constraint of transporting all packages within "d" days then 
-  // we can transport all packages
-  if (reqDays <= days) return true
-
-  return false
+  return reqDays
 }
 
 const res = brute([3, 2, 2, 4, 1, 4], 3)
