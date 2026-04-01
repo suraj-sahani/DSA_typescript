@@ -56,5 +56,25 @@ function brute(nums: number[], k: number) {
   return i;
 }
 
-const res = brute([1, 2, 3, 4], 2);
+// Better Approach
+// Observation, for any array with no missing numbers,
+// arr[i] === i+1
+// If any number is missing, arr[i] becomes greater that i + 1
+// and the elements before it is arr[i] - (i+1)
+// TC - O(n)
+// SC - O(1)
+function better(nums: number[], k: number) {
+  const n = nums.length;
+
+  for (let i = 0; i < n; i++) {
+    if (nums[i]! > k + i) return k + i;
+  }
+
+  // If all number in the array are present,
+  // then that mean the missing number is at the end,
+  // thus the kth missing number will be k + n
+  return k + n;
+}
+
+const res = better([2, 3, 4, 7, 11], 5);
 console.log(res);
