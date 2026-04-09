@@ -55,7 +55,8 @@
 // and at every iteration, we will see if for the distance "d", we can place "k" cows,
 // Since we are iterating from [1,max-min], if will automatically give us the max values between the min
 // diatance between 2 cows.
-
+// TC - O(n * (max - min))
+// SC - O(1)
 function brute(stalls: number[], k: number) {
   const sortedStall = stalls.sort((a, b) => a - b);
   const n = sortedStall.length,
@@ -65,6 +66,38 @@ function brute(stalls: number[], k: number) {
   for (let i = min; i <= max; i++) {
     if (!canPlaceCows(sortedStall, i, k)) return i - 1;
   }
+}
+
+// Optimal Solution
+// We apply binary search on answers as we know the limit within which our answers lie
+// TC - O(log n * (max - min))
+// SC - O(1)
+function optimal(stalls: number[], k: number) {
+  const sortedStalls = stalls.sort((a, b) => a - b);
+  const n = sortedStalls.length;
+
+  let low = 1,
+    high = sortedStalls[n - 1]!,
+    maxDistance = -1;
+
+  while (low <= high) {
+    let mid = low + Math.floor((high - low) / 2);
+
+    // We check if we can place k cows with a minimum distance of mid,
+    // if its possible, we need the maximum value, thus we eliminate the left half.
+    if (canPlaceCows(stalls, mid, k)) {
+      maxDistance = mid;
+      low = mid + 1;
+    }
+    // If we cannot place cows for a particular mid value, then that means,
+    // min distance value is too large and we need to look for smaller values,
+    // thus we eliminate the right half
+    else {
+      high = mid - 1;
+    }
+  }
+
+  return maxDistance;
 }
 
 function canPlaceCows(stalls: number[], minDistance: number, cows: number) {
@@ -86,5 +119,5 @@ function canPlaceCows(stalls: number[], minDistance: number, cows: number) {
   return false;
 }
 
-const res = brute([10, 1, 2, 7, 5], 3);
+const res = optimal([2, 12, 11, 3, 26, 7], 5);
 console.log(res);
