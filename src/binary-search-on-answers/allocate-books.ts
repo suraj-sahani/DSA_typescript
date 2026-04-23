@@ -95,6 +95,41 @@ function brute(books: number[], students: number) {
   return -1;
 }
 
+// Optimal Solution
+// We knwo that out answer lies between max(books[i]) to sum(books[i])
+// Thus, since we know the answers list, we can use binary search.
+// TC - O(n * log(sum - max))
+// SC - O(1)
+function optimal(books: number[], students: number) {
+  if (students > books.length) return -1;
+
+  let low = Math.max(...books),
+    high = books.reduce((acc, val) => acc + val, 0);
+
+  while (low <= high) {
+    let mid = low + Math.floor((high - low) / 2);
+
+    // This value can be equal,greater and less
+    // Observation is that if we increase the value of maxPages/mid, the allocatedStudents will be smaller
+    // and if we decrease the value of maxPages/mid, the value allocatedStudents will be greater
+    // We will use this observation to eliminate the right/left halves
+    const allocatedStudents = countStudents(books, mid);
+    // if the count is greater, that means, we need to increase the value of mid
+    // We need to eliminate the left half
+    if (allocatedStudents > students) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+
+  // Why are we returning low?
+  // At the end of the binary search, we see that high has crossed low.
+  // At this point, the low will contain the last possible value for which,
+  // the students count was equal to the input students
+  return low;
+}
+
 function countStudents(books: number[], maxPages: number): number {
   const n = books.length;
   let currentMaxPageSum = 0,
@@ -120,5 +155,5 @@ function countStudents(books: number[], maxPages: number): number {
   return allocatedStudents;
 }
 
-const res = brute([25, 46, 28, 49, 24], 4);
+const res = optimal([25, 46, 28, 49, 24], 4);
 console.log(res);
