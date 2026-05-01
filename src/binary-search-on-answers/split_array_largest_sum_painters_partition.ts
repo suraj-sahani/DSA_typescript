@@ -33,6 +33,8 @@ Constraints:
 // These problem follow the same pattern as "Allocate Books"
 // We need to find the largest sum so as to that the array can be 
 // split into "k" parts.
+// TC - O(n * (sum_of_el - max))
+// SC - O(1)
 function brute(nums: number[], k: number) {
   // At first, we need to asuume what is the minimum number,
   // that can be split. We can start from 1 but that does not make sense
@@ -50,6 +52,30 @@ function brute(nums: number[], k: number) {
 
   return -1
 }
+
+
+// We use thw same methodology but with binary search
+// as we know the range in whiich our answer lies
+// TC - O(n * log(sum_of_el - max))
+// SC - O(1)
+function optimal(nums: number[], k: number) {
+  let low = Math.max(...nums), high = nums.reduce((acc, val) => acc + val, 0)
+
+  while (low <= high) {
+    let mid = low + Math.floor(((high - low) / 2))
+
+    const splitCount = findSplitCount(nums, k, mid)
+
+    // If we increase the value of assumed, split, we will get
+    // a smaller value of k thus, we need to increase the search space
+    if (splitCount > k) low = mid + 1
+    // If we descrease the value of mid, we will get a smaller value of k
+    else high = mid - 1
+  }
+
+  return low
+}
+
 
 function findSplitCount(nums: number[], k: number, maxSum: number) {
   const n = nums.length;
@@ -69,5 +95,5 @@ function findSplitCount(nums: number[], k: number, maxSum: number) {
   return count
 }
 
-const res = brute([7, 2, 5, 10, 8], 2)
+const res = optimal([1, 2, 3, 4, 5], 2)
 console.log(res)
