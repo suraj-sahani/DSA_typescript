@@ -96,7 +96,7 @@ function brute(books: number[], students: number) {
 }
 
 // Optimal Solution
-// We knwo that out answer lies between max(books[i]) to sum(books[i])
+// We know that out answer lies between max(books[i]) to sum(books[i])
 // Thus, since we know the answers list, we can use binary search.
 // TC - O(n * log(sum - max))
 // SC - O(1)
