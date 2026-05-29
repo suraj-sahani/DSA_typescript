@@ -71,5 +71,35 @@ function brute(arr1: number[], arr2: number[]) {
   return merged[Math.floor(mergedLength / 2)]!
 }
 
-const res = brute([1, 4, 5], [3, 5])
+
+// Better Approach
+// We dont really need to keep the merged array. If we can get,
+// the index for elements, we cant use the indexes to calculate the median
+// TC - O(m + n)
+// SC - O(1)
+function better(arr1: number[], arr2: number[]) {
+  const n = arr1.length, m = arr2.length;
+
+  let m1 = -1, m2 = -1, i = 0, j = 0;
+  for (let count = 0; count <= (m + n) / 2; count++) {
+    m2 = m1;
+
+    // if both the arrays have remaining elements
+    if (i != n && j != m)
+      m1 = (arr1[i]! > arr2[j]!) ? arr2[j++]! : arr1[i++]!;
+
+    // if only arr1[] has remaining elements
+    else if (i < n)
+      m1 = arr1[i++]!;
+
+    // if only arr2[] has remaining elements
+    else
+      m1 = arr2[j++]!;
+  }
+
+  if ((n + m) % 2 === 0) return (m1 + m2) / 2
+  return m2
+}
+
+const res = better([1, 4, 5], [3, 5])
 console.log(res)
