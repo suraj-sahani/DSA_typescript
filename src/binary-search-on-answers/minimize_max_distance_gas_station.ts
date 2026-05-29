@@ -30,6 +30,8 @@ It can be shown that there is no possible way to add 1 gas station
 in such a way that the value of ‘dist’ is lower than this. 
  */
 
+import { PriorityQueue } from "../priority_queue";
+
 /* 
 Approach for any given array of distances,
 arr = [1,7], k = 2, we can start by plaing at the start or the end,
@@ -80,6 +82,8 @@ we just need to know how many elements we are placing between the items.
  We iterate over the gas stations, and keep track of the maximum distance 
  and the index ar which the maximum distance occurs using the array we 
  created to keep track of gaps
+ TC - O(n*k) + O(n) => O(n*k) for placing k gas stations + O(n) to find max distance
+ SC - O(1)
  */
 function brute(arr: number[], k: number) {
   const n = arr.length;
@@ -115,5 +119,44 @@ function brute(arr: number[], k: number) {
   return maxAns;
 }
 
-const res = brute([1, 13, 17, 23], 5)
+
+/* 
+Better Approach - Min Heap/Priority Queue
+We ar currently iterating through the array to find max sectionLength
+We can reduce this by using a priority queue
+We will create the same howMany array to store the number 
+of items placed in the segment but in the priority queue,
+we store the (maxDistance, items placed at howMany[i])
+For each iteration of placing an element,
+we will update the priority queue with the (new distance, items placed at howMany[i])
+*/
+
+function better(arr: number[], k: number) {
+  const n = arr.length
+  const howMany = Array(n - 1).fill(0)
+
+  const pq = new PriorityQueue<[number, number]>()
+
+  for (let i = 0; i < n; i++) {
+    const diff = (arr[i + 1] ?? 0) - (arr[i] ?? 0)
+    pq.enqueue([diff, i], 0)
+  }
+
+  for (let gasStations = 1; gasStations <= k; gasStations++) {
+    const top = pq.peek()!
+    pq.dequeue()
+
+    const sectionIndex = top[1]!
+    howMany[sectionIndex]++
+
+    const initialDiff = (arr[sectionIndex + 1] ?? 0) - (arr[sectionIndex] ?? 0)
+    const newSectionlength = initialDiff / (howMany[sectionIndex] + 1)
+
+    pq.enqueue([newSectionlength, sectionIndex], 0)
+
+  }
+  return pq.peek()![0]
+}
+
+const res = better([1, 13, 17, 23], 5)
 console.log(res)
