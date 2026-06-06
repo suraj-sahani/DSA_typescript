@@ -155,8 +155,8 @@ if l2 > r1, we cannot take the left half hence low = mid + 1
 We need to keep in mind that we are eleminting based on the symmetry
 Thus, if we take 4 elements from arr1 and 1 element from arr2
 and l1 > r2, taking more elements from arr1 will not give us a better result
-as if we increase the number of elements take from arr1, l1 will keep increasing
-Same thing goes for the second half i.e if we take 2 element from arr1 
+as if we increase the number of elements taken from arr1, l1 will keep increasing
+Same thing goes for the second half i.e if we take 2 element from arr1
 and 3 from arr2 and the l2 > r1, we will not get a better result by taking
 more elements as taking more would increase the value of l2.
 

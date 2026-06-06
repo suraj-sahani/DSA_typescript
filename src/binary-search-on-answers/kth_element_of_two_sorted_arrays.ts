@@ -102,7 +102,22 @@ function optimal(arr1: number[], arr2: number[], k: number) {
 
   if (n1 > n2) return optimal(arr2, arr1, k)
 
-  let low = 0, high = n1;
+  // Why are we not taking low = 0 and high = n1
+  // When we take low = 0, we are saying that we will not take any elements from arr1
+  // When we take high = n1, we are saying that we will take everything from arr2
+  // Since we are always considering the smaller array,
+  // and n1 = 6 for example, it does not make sense take all elements from arr1,
+  // as the merged array should contain elements from arr1 as well as arr2 or at max 
+  // k elements from either of the arrays
+  // thus we pick at max k elements from arr1.
+  // Thus, out high will be min(k,n1)
+  // Now, for low, smaller values will not make a difference
+  // but for large values of k, 
+  // e.g k = 7, arr = 6 elements, arr2 = 5 elements and total length = 11
+  // if we take 7 from the left and remaing 4 from the right to form the symmetry
+  // Event if we pick all elements from arr2(i.e. 5 elements) we still need a minimum
+  // of 2 elements from the arr1
+  let low = Math.max(k - n2, 0), high = Math.min(k, n1);
   // We follow the same approach here but instead to taking the total length,
   // we restrict it to k as we need the kth element
   const requiredLeft = k
@@ -116,8 +131,7 @@ function optimal(arr1: number[], arr2: number[], k: number) {
     let r2 = mid2 === n2 ? Number.MAX_SAFE_INTEGER : arr2[mid2]!
 
     if (l1 <= r2 && l2 <= r1) {
-      if ((n1 + n2) % 2 !== 0) return Math.max(l1, l2)
-      else (Math.max(l1, l2) + Math.max(r1, r2)) / 2
+      return Math.max(l1, l2)
     }
 
     else if (l1 > r2) high = mid1 - 1;
