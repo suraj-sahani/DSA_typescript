@@ -41,5 +41,54 @@ function brute(arr1: number[], arr2: number[], k: number) {
   return ans[k - 1]!
 }
 
-const res = brute([2, 3, 6, 7, 9], [1, 4, 8, 10], 5)
+
+/*
+Better Apporach
+We dont create a new array to store the merged elements,
+rather we keep track of the indexes
+We will iterate over the arrays while keeping track of the current element
+and the count of elements we have encountered till then.
+If at any point, the count matches the k, we return that element
+TC - O(n + m)
+SC - O(1)
+*/
+
+function better(arr1: number[], arr2: number[], k: number) {
+  const n1 = arr1.length, n2 = arr2.length;
+
+  if (k > n1 + n2) return -1
+
+  let count = 0, i = 0, j = 0
+
+  let el = -1;
+  while (i < n1 && j < n2) {
+    if (arr1[i]! < arr2[j]!)
+      el = arr1[i++]!
+
+    else
+      el = arr2[j++]!
+
+
+    count++
+    if (count === k) return el
+  }
+
+  while (i < n1) {
+    el = arr1[i++]!
+    count++
+    if (count === k) return el
+
+  }
+
+  while (j < n2) {
+    el = arr2[j++]!
+    count++
+    if (count === k) return el
+
+  }
+
+  return el
+}
+
+const res = better([2, 3], [1, 4, 8, 9, 12], 5)
 console.log(res)

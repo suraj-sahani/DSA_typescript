@@ -74,7 +74,7 @@ function brute(arr1: number[], arr2: number[]) {
 
 // Better Approach
 // We dont really need to keep the merged array. If we can get,
-// the index for elements, we cant use the indexes to calculate the median
+// the index for elements, we can use the indexes to calculate the median
 // TC - O(m + n)
 // SC - O(1)
 function better(arr1: number[], arr2: number[]) {
