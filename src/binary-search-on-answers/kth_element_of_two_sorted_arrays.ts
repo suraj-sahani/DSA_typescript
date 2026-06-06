@@ -90,5 +90,43 @@ function better(arr1: number[], arr2: number[], k: number) {
   return el
 }
 
-const res = better([2, 3], [1, 4, 8, 9, 12], 5)
+/*
+Optimal Apporach
+Since both the arrays are sorted, we can use binary search.
+We will use the same approach as median of sorted arrays
+TC - O(min(log m, log n))
+SC - O(1)
+*/
+function optimal(arr1: number[], arr2: number[], k: number) {
+  const n1 = arr1.length, n2 = arr2.length;
+
+  if (n1 > n2) return optimal(arr2, arr1, k)
+
+  let low = 0, high = n1;
+  // We follow the same approach here but instead to taking the total length,
+  // we restrict it to k as we need the kth element
+  const requiredLeft = k
+  while (low <= high) {
+    let mid1 = low + Math.floor((high - low) / 2)
+    let mid2 = requiredLeft - mid1
+
+    let l1 = mid1 === 0 ? Number.MIN_SAFE_INTEGER : arr1[mid1 - 1]!
+    let l2 = mid2 === 0 ? Number.MIN_SAFE_INTEGER : arr2[mid2 - 1]!
+    let r1 = mid1 === n1 ? Number.MAX_SAFE_INTEGER : arr1[mid1]!
+    let r2 = mid2 === n2 ? Number.MAX_SAFE_INTEGER : arr2[mid2]!
+
+    if (l1 <= r2 && l2 <= r1) {
+      if ((n1 + n2) % 2 !== 0) return Math.max(l1, l2)
+      else (Math.max(l1, l2) + Math.max(r1, r2)) / 2
+    }
+
+    else if (l1 > r2) high = mid1 - 1;
+    else low = mid1 + 1
+
+  }
+
+  return -1
+}
+
+const res = optimal([2, 3], [1, 4, 8, 9, 12], 5)
 console.log(res)

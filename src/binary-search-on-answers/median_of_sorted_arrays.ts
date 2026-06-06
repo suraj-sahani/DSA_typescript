@@ -204,10 +204,10 @@ function optimal(arr1: number[], arr2: number[]): number {
     // Determine values at the partition boundaries
     // If mid1/mid2 is at 0, there is no element on the left (use -Infinity)
     // If mid1/mid2 is at n1/n2, there is no element on the right (use Infinity)
-    let l1 = mid1 === 0 ? -Infinity : arr1[mid1 - 1]!;
-    let l2 = mid2 === 0 ? -Infinity : arr2[mid2 - 1]!;
-    let r1 = mid1 === n1 ? Infinity : arr1[mid1]!;
-    let r2 = mid2 === n2 ? Infinity : arr2[mid2]!;
+    let l1 = mid1 === 0 ? Number.MIN_SAFE_INTEGER : arr1[mid1 - 1]!;
+    let l2 = mid2 === 0 ? Number.MIN_SAFE_INTEGER : arr2[mid2 - 1]!;
+    let r1 = mid1 === n1 ? Number.MAX_SAFE_INTEGER : arr1[mid1]!;
+    let r2 = mid2 === n2 ? Number.MAX_SAFE_INTEGER : arr2[mid2]!;
 
     // Check if the current partition is valid
     if (l1 <= r2 && l2 <= r1) {
