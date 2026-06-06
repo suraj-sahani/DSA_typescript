@@ -181,6 +181,9 @@ therefore the line of symmetry will be (n1 + n2 + 1 ) / 2
 The formula for median will also change,
 Formula  = max(l1,l2) / 2 => if we choose median on the left
 Formula = max(r1,r2) / 2
+
+TC - O(min(log n, log m))
+SC - O(1)
 */
 function optimal(arr1: number[], arr2: number[]): number {
   const n1 = arr1.length;
