@@ -41,7 +41,7 @@ function brute(arr: number[][]) {
   let maxCount = -1, maxCountIndex = -1
 
   for (let i = 0; i < rows; i++) {
-    let oneCount = -1
+    let oneCount = 0
 
     for (let j = 0; j < cols; j++) {
       oneCount += arr[i]![j]!
@@ -57,7 +57,60 @@ function brute(arr: number[][]) {
 }
 
 
-const res = brute([
+/*
+Optimal Solution
+Since we have to optimize a n * m matrix,
+The rows are sorted so mayne we can optimize the row traversal
+by using binary search
+The Apprach would be to just find the first one in the row
+Once we do, we can automatically find the one count
+TC - O(n log m)
+SC - O(1)
+*/
+
+function optimal(arr: number[][]) {
+  const rows = arr.length, cols = arr[0]!.length
+
+  let maxCount = -1, maxCountIndex = -1
+
+  for (let i = 0; i < rows; i++) {
+    let oneCount = 0;
+
+    // We use the lower bound method to find the first index of 1
+    // in each row
+    const firstOneIndex = lowerBound(arr[i]!, 1)
+    oneCount += arr[i]!.length - firstOneIndex
+
+    if (oneCount > maxCount) {
+      maxCount = oneCount
+      maxCountIndex = i
+    }
+  }
+
+  return maxCountIndex
+}
+
+
+function lowerBound(arr: number[], target: number) {
+  const n = arr.length
+
+  let low = 0, high = n - 1
+  let ans = n
+
+  while (low <= high) {
+    let mid = low + Math.floor((high - low) / 2)
+
+    if (arr[mid]! >= target) {
+      ans = mid
+      high = mid - 1
+    } else
+      low = mid + 1
+  }
+
+  return ans
+}
+
+const res = optimal([
   [0, 0, 1, 1, 1], [0, 0, 0, 1, 1], [0, 1, 1, 1, 1], [0, 0, 0, 0, 1], [0, 1, 1, 1, 1]
 ])
 
