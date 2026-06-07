@@ -71,7 +71,13 @@ SC - O(1)
 function optimal(arr: number[][]) {
   const rows = arr.length, cols = arr[0]!.length
 
-  let maxCount = -1, maxCountIndex = -1
+  // The only modification we need to make is that we initialize 
+  // the maxCount to zero rather than -1 because of the case 
+  // where if the row has no 1s, the oneCount will still be updated 
+  // as for initial oneCount = -1, when the number of 1s is 0 in a row,
+  // the coundition oneCount > maxCount satisfies and it updates the maxCount
+  // and maxCountIndex
+  let maxCount = 0, maxCountIndex = -1
 
   for (let i = 0; i < rows; i++) {
     let oneCount = 0;
@@ -79,7 +85,7 @@ function optimal(arr: number[][]) {
     // We use the lower bound method to find the first index of 1
     // in each row
     const firstOneIndex = lowerBound(arr[i]!, 1)
-    oneCount += arr[i]!.length - firstOneIndex
+    oneCount += cols - firstOneIndex
 
     if (oneCount > maxCount) {
       maxCount = oneCount
