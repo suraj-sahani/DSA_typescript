@@ -33,5 +33,38 @@ function brute(mat: number[][], target: number) {
   return false
 }
 
-const res = brute([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]], 7)
+
+/* Better Apprach
+Since the entire matrix is sorted, we can go to each row
+and check if the target is in the row by simply
+checking if the target lies between the first and last element of
+the row and if does lie, we then apply binary search on the row
+TC- O(n  + log m) => O(n) : for iterating over the rows and log m for the one time when we perform binary search
+SC - O(1)
+*/
+function better(mat: number[][], target: number) {
+  const rows = mat.length, cols = mat[0]!.length
+
+  for (let i = 0; i < rows; i++) {
+    // check if the target can lie between
+    // this row.
+    if (mat[i]![0]! <= target && target <= mat[i]![cols - 1]!) {
+      const arr = mat[i]!
+      let low = 0, high = cols - 1
+
+      while (low <= high) {
+        let mid = low + Math.floor((high - low) / 2)
+        if (arr[mid]! === target) return true
+        else if (arr[mid]! > target) high = mid - 1
+        else low = mid + 1
+      }
+
+    }
+  }
+
+  return -1
+}
+
+
+const res = better([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]], 7)
 console.log(res)
