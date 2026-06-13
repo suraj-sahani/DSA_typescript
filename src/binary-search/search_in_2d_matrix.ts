@@ -62,9 +62,59 @@ function better(mat: number[][], target: number) {
     }
   }
 
-  return -1
+  return false
 }
 
+/*
+Optimal Apprach
+As the matrix is itselt soryed, if we observe carefully, if we flatten the 
+matrix, it will give us a 1D array of size m*n and if we apply
+binary search on this 1D array the time complexity will be log(m*n)
+This, we will follow this approach but actually not flatten the array
+as flattening the array itself will take O(m*n) time, thus we need
+to dervie a formula for this.
+Let assume the array is a 1D array, if we try to find the mid and
+map the mid into a coordinate, our job will be done.
+Formula : 
+row = index / cols ;where index is the mid for the 1D array.
+col = index % cols
 
-const res = better([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]], 7)
+What is the intuition behind the formula
+Example arr : Number in the brackets in the 1D indexing
+
+0   [5(0)   4(1)   6(2)   8(3)]
+1   [10(4)  12(5)  13(6)  15(7)]
+2   [17(8)  18(9)  19(10)   20(11)]
+
+The first column has indexing in multiples of 4
+this is because every row has "m" numbers
+Thereby in order to get the rows index, we divide by "m"
+To get the cols index, it is similar as at any point, we know 
+that a multiple of "m" elements are before the current index,
+thus to find the cols, we just mod it by 'm'
+
+TC - O(log (m * n))
+SC - O(1)
+*/
+function optimal(mat: number[][], target: number) {
+  const rows = mat.length, cols = mat[0]!.length
+
+  let low = 0, high = (rows * cols) - 1
+
+  while (low <= high) {
+    let mid = low + Math.floor((high - low) / 2)
+
+    // Do not forget to floor the row as it might result in a floating point value
+    const row = Math.floor(mid / cols), col = mid % cols
+
+    if (mat[row]![col]! === target) return true
+    // Note that we arw still updating the 1D index 
+    else if (mat[row]![col]! > target) high = mid - 1
+    else low = mid + 1
+  }
+
+  return false
+}
+
+const res = optimal([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]], 19)
 console.log(res)
