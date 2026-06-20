@@ -70,7 +70,34 @@ function better(mat: number[][], target: number) {
   return false
 }
 
-const res = better([[1, 4, 7, 11, 15], [2, 5, 8, 12, 19], [3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30]], 99)
+
+// Optimal Approach
+// This is based on observation that if we take row = 0 and col = m - 1 or row = n - 1 and col = 0
+// It can be seen that elements to the left of mat[row][col] is decreasing
+// and to the right is increasing. We will use this and eliminate rows and cols.
+// To do so, we check if mat[row][col] is greater than the target, we omit the
+// col and decrease comlumn by 1. The we check if the row can have the target,
+// if it does not, we increase the row.
+// For time comolexity, we can see that we are only traversing
+// in either vertical or horizontal directions, thus, at the worst case,
+// we will move through all the rows and all the columns
+// TC - O(n + m)
+// SC - O(1)
+function optimal(mat: number[][], target: number) {
+  const n = mat.length, m = mat[0]!.length
+
+  let row = 0, col = m - 1
+
+  while (row < n && col >= 0) {
+    if (mat[row]![col]! === target) return true
+
+    else if (mat[row]![col]! > target) col--
+    else row++
+  }
+
+  return false
+}
+const res = optimal([[1, 4, 7, 11, 15], [2, 5, 8, 12, 19], [3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30]], 15)
 console.log(res)
 
 
