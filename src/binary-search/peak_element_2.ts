@@ -49,5 +49,46 @@ function brute(mat: number[][]) {
   return [-1, -1]
 }
 
-const res = brute([[10, 20, 15], [21, 30, 14], [7, 16, 32]])
+// Optimal Approach
+// Use the same peak-valley method on the indexes of the matrix.
+// At each iteration on the colums, we find the max element at that particular
+// column and this reduces the checking for top and bottom elements.
+// If all adjacents elements are smaller,then this is out peak.
+// If the left element is greater, then we reject the right portion
+// of the matrix and if the right is greater, we reject the left portion.
+// TC - O(n log m)
+// SC - O(1)
+function optimal(mat: number[][]) {
+  const cols = mat[0]!.length
+
+  let low = 0, high = cols - 1
+
+  while (low <= high) {
+    let mid = low + Math.floor((high - low) / 2)
+    const row = maxElementCol(mat, mid)
+    const left = mid - 1 >= 0 ? mat[row]![mid - 1]! : -1
+    const right = mid + 1 < cols ? mat[row]![mid + 1]! : -1
+
+    if (mat[row]![mid]! > left && mat[row]![mid]! > right) return [row, mid]
+    else if (mat[row]![mid]! < left) high = mid - 1
+    else low = mid + 1
+  }
+
+  return [-1, -1]
+}
+
+function maxElementCol(mat: number[][], col: number) {
+  const row = mat.length, cols = mat[0]!.length
+  let index = -1, maxElement = Number.MIN_SAFE_INTEGER
+  for (let i = 0; i < row; i++) {
+    if (mat[i]![col]! > maxElement) {
+      maxElement = mat[i]![col]!
+      index = i
+    }
+  }
+
+  return index
+}
+
+const res = optimal([[10, 20, 15], [21, 30, 14], [7, 16, 32]])
 console.log(res)
