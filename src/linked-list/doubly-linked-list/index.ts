@@ -2,40 +2,18 @@ export class Node<T> {
   data: T;
   next: Node<T> | null;
 
-  constructor(data: T, next?: Node<T> | null) {
+  constructor(data: T, next: Node<T> | null = null) {
     this.data = data;
-    this.next = next ?? null;
+    this.next = next;
   }
 }
 
 export class SinglyLinkedList<T> {
   head: Node<T> | null = null;
 
-  constructor(node: Node<T> | null = null) {
-    this.head = node;
-  }
-
   /**
-     * Visual print representing a singly linked list's unidirectional flow.
-     * Format: [ 10 ] -> [ 20 ] -> [ 30 ] -> null
-     */
-  print(): void {
-    if (this.head === null) {
-      console.log("null");
-      return;
-    }
-
-    const elements: string[] = [];
-    let current: Node<T> | null = this.head;
-
-    while (current !== null) {
-      elements.push(`[ ${String(current.data)} ]`);
-      current = current.next;
-    }
-
-    console.log(`${elements.join(" -> ")} -> null`);
-  }
-
+   * Static factory method: constructs a list from an array in O(n) time.
+   */
   static fromArray<T>(arr: T[]): SinglyLinkedList<T> {
     const list = new SinglyLinkedList<T>();
     if (arr.length === 0) return list;
@@ -62,7 +40,6 @@ export class SinglyLinkedList<T> {
     }
 
     let temp = this.head;
-    // temp is structurally guaranteed to be Node<T> here
     while (temp.next !== null) {
       temp = temp.next;
     }
@@ -81,13 +58,12 @@ export class SinglyLinkedList<T> {
     let temp: Node<T> | null = this.head;
     let currentIndex = 0;
 
-    // Traverse to the node *before* the insertion point
+    // Traverse to the node immediately before the target index
     while (temp !== null && currentIndex < index - 1) {
       temp = temp.next;
       currentIndex++;
     }
 
-    // If temp is null, the index exceeds the list length
     if (temp === null) {
       throw new Error("Index out of bounds");
     }
@@ -103,14 +79,12 @@ export class SinglyLinkedList<T> {
   deleteTail(): void {
     if (this.head === null) return;
 
-    // Handle 1-element list deletion
     if (this.head.next === null) {
       this.head = null;
       return;
     }
 
     let temp = this.head;
-    // Type-safe traversal checking ahead
     while (temp.next !== null && temp.next.next !== null) {
       temp = temp.next;
     }
@@ -118,28 +92,63 @@ export class SinglyLinkedList<T> {
     temp.next = null;
   }
 
-  deleteAtIndex(index: number) {
-    // If linked list is empty
-    if (this.head === null) return;
-    // If we are asked to delete the 1st element
-    if (index === 1) {
+  deleteAtIndex(index: number): void {
+    if (this.head === null || index < 0) return;
+
+    if (index === 0) {
       this.head = this.head.next;
       return;
     }
 
-    let count = 0,
-      temp = this.head,
-      prev = this.head;
-    while (temp !== null) {
-      count++;
+    let temp: Node<T> | null = this.head;
+    let currentIndex = 0;
 
-      if (count === index) {
-        prev.next = prev.next!.next;
-        break;
-      }
-      prev = temp;
-      temp = temp.next!;
+    while (temp !== null && currentIndex < index - 1) {
+      temp = temp.next;
+      currentIndex++;
     }
+
+    if (temp === null || temp.next === null) return;
+
+    temp.next = temp.next.next;
+  }
+
+  /**
+   * Visual print representing a singly linked list's unidirectional flow.
+   * Format: [ 10 ] -> [ 20 ] -> [ 30 ] -> null
+   */
+  print(): void {
+    if (this.head === null) {
+      console.log("null");
+      return;
+    }
+
+    const elements: string[] = [];
+    let current: Node<T> | null = this.head;
+
+    while (current !== null) {
+      elements.push(`[ ${String(current.data)} ]`);
+      current = current.next;
+    }
+
+    console.log(`${elements.join(" -> ")} -> null`);
   }
 }
 
+// --- Execution & Demo ---
+(() => {
+  // 1. Create directly from array
+  const ll = SinglyLinkedList.fromArray([2, 5, 0, 12, 8]);
+  console.log("Constructed from array:");
+  ll.print(); // [ 2 ] -> [ 5 ] -> [ 0 ] -> [ 12 ] -> [ 8 ] -> null
+
+  // 2. Modify elements
+  ll.deleteAtIndex(2); // deletes 0 at index 2
+  console.log("\nAfter deleting index 2:");
+  ll.print(); // [ 2 ] -> [ 5 ] -> [ 12 ] -> [ 8 ] -> null
+
+  ll.insertAtHead(99);
+  ll.insertAtTail(100);
+  console.log("\nAfter inserting head (99) and tail (100):");
+  ll.print(); // [ 99 ] -> [ 2 ] -> [ 5 ] -> [ 12 ] -> [ 8 ] -> [ 100 ] -> null
+})();
