@@ -19,7 +19,7 @@
 // The number of nodes in the list is the range [0, 5000].
 // -5000 <= Node.val <= 5000
 
-import { DDL, type DNode } from ".";
+import { DoublyLinkedList, type DNode } from ".";
 
 // Brute Force Approach
 // Iterate over the linked-list and store the data in a stack
@@ -69,7 +69,7 @@ function optimal(head: DNode<number> | null): DNode<number> | null {
   return newHead;
 }
 
-const dll = new DDL<number>();
+const dll = new DoublyLinkedList<number>();
 dll.insertAtHead(5);
 dll.insertAtHead(4);
 dll.insertAtHead(3);
