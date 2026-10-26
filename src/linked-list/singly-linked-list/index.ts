@@ -15,10 +15,23 @@ export class SinglyLinkedList<T> {
     this.head = node;
   }
 
+  size(): number {
+    if (this.head === null) return 0;
+
+    let count = 0,
+      temp: Node<T> | null = this.head;
+
+    while (temp !== null) {
+      count++;
+      temp = temp.next;
+    }
+
+    return count;
+  }
   /**
-     * Visual print representing a singly linked list's unidirectional flow.
-     * Format: [ 10 ] -> [ 20 ] -> [ 30 ] -> null
-     */
+   * Visual print representing a singly linked list's unidirectional flow.
+   * Format: [ 10 ] -> [ 20 ] -> [ 30 ] -> null
+   */
   print(): void {
     if (this.head === null) {
       console.log("null");
@@ -142,4 +155,3 @@ export class SinglyLinkedList<T> {
     }
   }
 }
-
