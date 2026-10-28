@@ -60,6 +60,8 @@ function brute<T>(head: Node<T> | null) {
 // Approach is simple, for any iteration, the current node
 // will have a next node and a previous node.
 // All we need to do is to reverse the pointers to the nodes
+// TC - O(n)
+// SC - O(1)
 function optimal<T>(head: Node<T> | null): Node<T> | null {
   if (head === null || head.next === null) return head;
 
@@ -82,8 +84,22 @@ function optimal<T>(head: Node<T> | null): Node<T> | null {
   return prev;
 }
 
+// Optimal Solution - Recursive Approach
+// TC - O(n)
+// SC - O(1)
+function optimalRecursive<T>(head: Node<T> | null): Node<T> | null {
+  if (head === null || head.next === null) return head;
+
+  let newHead = optimalRecursive(head.next);
+  let nextNode = head.next;
+  nextNode.next = head;
+  head.next = null;
+
+  return newHead;
+}
+
 const ll = SinglyLinkedList.fromArray([1, 2, 3, 4, 5]);
 ll.print();
 const result = new SinglyLinkedList();
-result.head = optimal(ll.head);
+result.head = optimalRecursive(ll.head);
 result.print();
